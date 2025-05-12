@@ -11,7 +11,6 @@ export default function CategoryPage() {
   const { getProductsByCategory } = useProducts();
   const [products, setProducts] = useState<any[]>([]);
   const [isMounted, setIsMounted] = useState(false);
-  const [isCartOpen, setIsCartOpen] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
@@ -45,7 +44,6 @@ export default function CategoryPage() {
             <ProductCard 
               key={product.id} 
               product={product} 
-              onCartClick={() => setIsCartOpen(true)}
             />
           ))}
         </div>

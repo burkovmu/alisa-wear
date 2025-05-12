@@ -2,39 +2,52 @@
 
 import Layout from '@/components/layout/Layout';
 import ProductCard from '@/components/product/ProductCard';
+import { Product } from '@/data/products';
 
-const newProducts = [
+const newProducts: Product[] = [
   {
     id: 1,
     name: 'Шелковый топ',
     price: 5900,
-    image: '/images/products/product1.jpg',
-    isNew: true,
-    isSale: false,
+    category: 'tops',
+    images: ['/images/products/product1.jpg'],
+    colors: ['#000000', '#FFFFFF'],
+    sizes: ['XS', 'S', 'M', 'L'],
+    status: 'new',
+    description: 'Легкий шелковый топ из новой коллекции'
   },
   {
     id: 3,
     name: 'Шелковый пиджак',
     price: 12900,
-    image: '/images/products/product3.jpg',
-    isNew: true,
-    isSale: false,
+    category: 'blazers',
+    images: ['/images/products/product3.jpg'],
+    colors: ['#000000', '#808080'],
+    sizes: ['S', 'M', 'L'],
+    status: 'new',
+    description: 'Элегантный шелковый пиджак из новой коллекции'
   },
   {
     id: 5,
     name: 'Шелковый топ',
     price: 5900,
-    image: '/images/products/product5.jpg',
-    isNew: true,
-    isSale: false,
+    category: 'tops',
+    images: ['/images/products/product5.jpg'],
+    colors: ['#FFFFFF', '#FFD700'],
+    sizes: ['XS', 'S', 'M'],
+    status: 'new',
+    description: 'Стильный шелковый топ из новой коллекции'
   },
   {
     id: 7,
     name: 'Шелковый пиджак',
     price: 12900,
-    image: '/images/products/product7.jpg',
-    isNew: true,
-    isSale: false,
+    category: 'blazers',
+    images: ['/images/products/product7.jpg'],
+    colors: ['#000000', '#000080'],
+    sizes: ['S', 'M', 'L', 'XL'],
+    status: 'new',
+    description: 'Модный шелковый пиджак из новой коллекции'
   },
 ];
 

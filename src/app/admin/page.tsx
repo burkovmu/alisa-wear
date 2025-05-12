@@ -175,8 +175,7 @@ function AdminPageContent() {
       name: formData.get('name') as string,
       price: Number(formData.get('price')),
       category: formData.get('category') as string,
-      isNew: formData.get('isNew') === 'on',
-      isSale: formData.get('isSale') === 'on',
+      status: formData.get('isNew') === 'on' ? 'new' : formData.get('isSale') === 'on' ? 'sale' : undefined,
       images: [],
       colorImages: {},
       description: formData.get('description') as string,
@@ -203,7 +202,7 @@ function AdminPageContent() {
     if (selectedProduct?.colorImages) {
       Object.keys(selectedProduct.colorImages).forEach(color => {
         if (selectedColors.includes(color)) {
-          newColorImages[color] = [...selectedProduct.colorImages[color]];
+          newColorImages[color] = [...selectedProduct.colorImages![color]];
         }
       });
     }
@@ -345,12 +344,12 @@ function AdminPageContent() {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex gap-2">
-                      {product.isNew && (
+                      {product.status === 'new' && (
                         <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-black text-white">
                           New
                         </span>
                       )}
-                      {product.isSale && (
+                      {product.status === 'sale' && (
                         <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-500 text-white">
                           Sale
                         </span>
@@ -656,7 +655,7 @@ function AdminPageContent() {
                       name="isNew"
                       id="isNew"
                       className="h-4 w-4 text-black border-gray-300 rounded"
-                      defaultChecked={selectedProduct?.isNew}
+                      defaultChecked={selectedProduct?.status === 'new'}
                     />
                     <label htmlFor="isNew" className="ml-2 text-sm text-gray-700">
                       Новый
@@ -668,7 +667,7 @@ function AdminPageContent() {
                       name="isSale"
                       id="isSale"
                       className="h-4 w-4 text-black border-gray-300 rounded"
-                      defaultChecked={selectedProduct?.isSale}
+                      defaultChecked={selectedProduct?.status === 'sale'}
                     />
                     <label htmlFor="isSale" className="ml-2 text-sm text-gray-700">
                       Распродажа

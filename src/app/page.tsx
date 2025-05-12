@@ -4,6 +4,7 @@ import Layout from '@/components/layout/Layout';
 import ProductCard from '@/components/product/ProductCard';
 import CategoryCard from '@/components/category/CategoryCard';
 import Slider from '@/components/slider/Slider';
+import { Product } from '@/data/products';
 
 const categories = [
   {
@@ -32,70 +33,94 @@ const categories = [
   }
 ];
 
-const popularProducts = [
+const popularProducts: Product[] = [
   {
     id: 1,
     name: 'Шелковый топ',
     price: 5900,
-    image: '/images/products/product1.jpg',
-    isNew: true,
-    isSale: false
+    category: 'tops',
+    images: ['/images/products/product1.jpg'],
+    colors: ['#000000', '#FFFFFF'],
+    sizes: ['XS', 'S', 'M', 'L'],
+    status: 'new',
+    description: 'Элегантный шелковый топ'
   },
   {
     id: 2,
     name: 'Шерстяная юбка',
     price: 8900,
-    image: '/images/products/product2.jpg',
-    isNew: false,
-    isSale: true
+    category: 'skirts',
+    images: ['/images/products/product2.jpg'],
+    colors: ['#000000', '#808080'],
+    sizes: ['S', 'M', 'L'],
+    status: 'sale',
+    description: 'Стильная шерстяная юбка'
   },
   {
     id: 3,
     name: 'Шелковый пиджак',
     price: 12900,
-    image: '/images/products/product3.jpg',
-    isNew: true,
-    isSale: false
+    category: 'blazers',
+    images: ['/images/products/product3.jpg'],
+    colors: ['#000000', '#808080'],
+    sizes: ['S', 'M', 'L'],
+    status: 'new',
+    description: 'Элегантный шелковый пиджак'
   },
   {
     id: 4,
     name: 'Кружевное платье',
     price: 15900,
-    image: '/images/products/product4.jpg',
-    isNew: false,
-    isSale: true
+    category: 'dresses',
+    images: ['/images/products/product4.jpg'],
+    colors: ['#FFFFFF', '#000000'],
+    sizes: ['XS', 'S', 'M', 'L'],
+    status: 'sale',
+    description: 'Изысканное кружевное платье'
   },
   {
     id: 5,
     name: 'Шелковый топ',
     price: 5900,
-    image: '/images/products/product1.jpg',
-    isNew: true,
-    isSale: false
+    category: 'tops',
+    images: ['/images/products/product1.jpg'],
+    colors: ['#000000', '#FFFFFF'],
+    sizes: ['XS', 'S', 'M', 'L'],
+    status: 'new',
+    description: 'Элегантный шелковый топ'
   },
   {
     id: 6,
     name: 'Шерстяная юбка',
     price: 8900,
-    image: '/images/products/product2.jpg',
-    isNew: false,
-    isSale: true
+    category: 'skirts',
+    images: ['/images/products/product2.jpg'],
+    colors: ['#000000', '#808080'],
+    sizes: ['S', 'M', 'L'],
+    status: 'sale',
+    description: 'Стильная шерстяная юбка'
   },
   {
     id: 7,
     name: 'Шелковый пиджак',
     price: 12900,
-    image: '/images/products/product3.jpg',
-    isNew: true,
-    isSale: false
+    category: 'blazers',
+    images: ['/images/products/product3.jpg'],
+    colors: ['#000000', '#808080'],
+    sizes: ['S', 'M', 'L'],
+    status: 'new',
+    description: 'Элегантный шелковый пиджак'
   },
   {
     id: 8,
     name: 'Кружевное платье',
     price: 15900,
-    image: '/images/products/product4.jpg',
-    isNew: false,
-    isSale: true
+    category: 'dresses',
+    images: ['/images/products/product4.jpg'],
+    colors: ['#FFFFFF', '#000000'],
+    sizes: ['XS', 'S', 'M', 'L'],
+    status: 'sale',
+    description: 'Изысканное кружевное платье'
   }
 ];
 
