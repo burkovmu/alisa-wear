@@ -52,13 +52,14 @@ export default function ProductCard({ product }: ProductCardProps) {
   if (!isMounted) {
     return (
       <div className="group relative">
-        <div className="relative aspect-[3/4] overflow-hidden bg-gray-50">
+        <div className="relative aspect-[3/4] overflow-hidden">
           {product.images && product.images.length > 0 ? (
             <Image
               src={product.images[0]}
               alt={product.name}
               fill
               className="object-cover"
+              unoptimized
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center text-gray-400">
@@ -80,7 +81,7 @@ export default function ProductCard({ product }: ProductCardProps) {
       <div className="relative">
         <Link href={`/product/${product.id}`} className="block">
           <div 
-            className="relative aspect-[3/4] overflow-hidden bg-gray-50"
+            className="relative aspect-[3/4] overflow-hidden"
             onMouseEnter={() => product.images && product.images.length > 1 && setSelectedImage(1)}
             onMouseLeave={() => setSelectedImage(0)}
           >
@@ -94,13 +95,31 @@ export default function ProductCard({ product }: ProductCardProps) {
                 priority={selectedImage === 0}
                 loading={selectedImage === 0 ? 'eager' : 'lazy'}
                 quality={60}
+                unoptimized
               />
             ) : (
               <div className="flex h-full items-center justify-center bg-gray-100">
                 <span className="text-gray-400">Нет изображения</span>
               </div>
             )}
+            
             <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300" />
+            
+            {/* Статус продукта */}
+            {product.status && (
+              <div className="absolute top-2 left-2">
+                {product.status === 'new' && (
+                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-sm text-xs font-bold bg-black text-white">
+                    New
+                  </span>
+                )}
+                {product.status === 'sale' && (
+                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-sm text-xs font-bold bg-red-500 text-white">
+                    Sale
+                  </span>
+                )}
+              </div>
+            )}
           </div>
           <div className="mt-4">
             <h3 className="text-sm font-light tracking-wide">{product.name}</h3>
@@ -112,7 +131,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
           <button
             onClick={handleFavoriteClick}
-            className="p-2 bg-white/90 backdrop-blur-sm rounded-full shadow-sm hover:bg-white transition-colors"
+            className="p-2 bg-white rounded-full shadow-sm hover:bg-gray-50 transition-colors"
           >
             {isFavorite(product.id) ? (
               <HeartIconSolid className="w-5 h-5 text-red-500" />

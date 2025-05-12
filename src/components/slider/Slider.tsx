@@ -50,6 +50,7 @@ const Slider = () => {
             fill
             className="object-cover"
             priority={index === 0}
+            unoptimized
           />
           <div className="absolute inset-0 bg-black/30" />
         </div>

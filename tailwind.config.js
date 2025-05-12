@@ -8,8 +8,16 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        playfair: ['var(--font-playfair)'],
-        roboto: ['var(--font-roboto)'],
+        sans: [
+          'system-ui',
+          '-apple-system',
+          'BlinkMacSystemFont',
+          '"Segoe UI"',
+          'Roboto',
+          'Helvetica',
+          'Arial',
+          'sans-serif',
+        ],
       },
     },
   },

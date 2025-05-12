@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useParams } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -10,6 +10,7 @@ import Layout from '@/components/layout/Layout';
 import { HeartIcon, ShoppingBagIcon, ChevronRightIcon, TruckIcon, ArrowPathIcon } from '@heroicons/react/24/outline';
 import { HeartIcon as HeartIconSolid } from '@heroicons/react/24/solid';
 import ProductCard from '@/components/product/ProductCard';
+import { Product } from '@/data/products';
 
 const colorMap: { [key: string]: string } = {
   'Черный': '#000000',
@@ -41,10 +42,17 @@ export default function ProductPage({ params }: ProductPageProps) {
   const [isMounted, setIsMounted] = useState(false);
   const [notification, setNotification] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
   const [isImageModalOpen, setIsImageModalOpen] = useState(false);
+  const [recentlyViewed, setRecentlyViewed] = useState<Product[]>([]);
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const touchStartX = useRef<number | null>(null);
+  const touchEndX = useRef<number | null>(null);
+  const [isTouching, setIsTouching] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
     if (product) {
+      setCurrentImages(product.images || []);
+      setCurrentSlide(0);
       if (product.colors && product.colors.length > 0) {
         setSelectedColor(product.colors[0]);
       }
@@ -53,8 +61,31 @@ export default function ProductPage({ params }: ProductPageProps) {
         const favorites = JSON.parse(savedFavorites);
         setIsFavorite(favorites.includes(product.id));
       }
+      
+      // Сохранение товара в "Ранее просмотренные"
+      const savedViewedItems = localStorage.getItem('recentlyViewed');
+      let viewedItems = savedViewedItems ? JSON.parse(savedViewedItems) : [];
+      
+      // Удаляем текущий товар из списка, если он там есть
+      viewedItems = viewedItems.filter((id: number) => id !== product.id);
+      
+      // Добавляем текущий товар в начало списка
+      viewedItems.unshift(product.id);
+      
+      // Ограничиваем список до 4 товаров
+      viewedItems = viewedItems.slice(0, 4);
+      
+      localStorage.setItem('recentlyViewed', JSON.stringify(viewedItems));
+      
+      // Загружаем ранее просмотренные товары для отображения
+      if (viewedItems.length > 1) { // Более 1, потому что текущий товар тоже в списке
+        const viewed = products.filter(p => 
+          viewedItems.includes(p.id) && p.id !== product.id
+        );
+        setRecentlyViewed(viewed);
+      }
     }
-  }, [product]);
+  }, [product, products]);
 
   useEffect(() => {
     if (product?.images && product.images.length > 0) {
@@ -63,20 +94,17 @@ export default function ProductPage({ params }: ProductPageProps) {
   }, [product?.images]);
 
   const handleColorSelect = (color: string) => {
-    if (selectedColor === color) {
-      setSelectedColor('');
-      if (product?.images) {
-        setCurrentImages(product.images);
-      }
+    setSelectedColor(color);
+    setSelectedSize('');
+    setCurrentSlide(0);
+    
+    // Если у товара есть изображения для этого цвета, загружаем их
+    if (product?.colorImages && product?.colorImages[color]) {
+      setCurrentImages(product.colorImages[color]);
     } else {
-      setSelectedColor(color);
-      if (product?.colorImages && product.colorImages[color] && product.colorImages[color].length > 0) {
-        setCurrentImages(product.colorImages[color]);
-      } else if (product?.images) {
-        setCurrentImages(product.images);
-      }
+      // Иначе показываем общие изображения товара
+      setCurrentImages(product?.images || []);
     }
-    setSelectedImageIndex(0);
   };
 
   const handleFavoriteClick = () => {
@@ -134,6 +162,36 @@ export default function ProductPage({ params }: ProductPageProps) {
     }
   }, [notification]);
 
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+    setIsTouching(true);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    touchEndX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = () => {
+    setIsTouching(false);
+    if (!touchStartX.current || !touchEndX.current || !currentImages) return;
+    
+    const diffX = touchStartX.current - touchEndX.current;
+    const threshold = 50; // минимальное расстояние для свайпа
+    
+    if (Math.abs(diffX) > threshold) {
+      if (diffX > 0) {
+        // Свайп влево - следующий слайд
+        setCurrentSlide((prev) => (prev < currentImages.length - 1 ? prev + 1 : prev));
+      } else {
+        // Свайп вправо - предыдущий слайд
+        setCurrentSlide((prev) => (prev > 0 ? prev - 1 : prev));
+      }
+    }
+    
+    touchStartX.current = null;
+    touchEndX.current = null;
+  };
+
   if (!isMounted || !product) {
     return (
       <Layout>
@@ -166,8 +224,55 @@ export default function ProductPage({ params }: ProductPageProps) {
         </nav>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Левая колонка с фотографиями */}
-          <div className="lg:col-span-2">
+          {/* Левая колонка с фотографиями - Мобильная версия (одна большая картинка со свайпом) */}
+          <div className="lg:col-span-2 block md:hidden">
+            {currentImages && currentImages.length > 0 ? (
+              <div className="relative">
+                <div 
+                  className="relative aspect-[3/4] overflow-hidden rounded-lg"
+                  onTouchStart={handleTouchStart}
+                  onTouchMove={handleTouchMove}
+                  onTouchEnd={handleTouchEnd}
+                  onClick={() => {
+                    setSelectedImageIndex(currentSlide);
+                    setIsImageModalOpen(true);
+                  }}
+                >
+                  <Image
+                    src={currentImages[currentSlide]}
+                    alt={`${product.name} - фото ${currentSlide + 1}`}
+                    fill
+                    className={`object-cover ${isTouching ? 'transition-none' : 'transition-opacity duration-300'}`}
+                    priority
+                    quality={80}
+                    sizes="100vw"
+                    unoptimized
+                  />
+                  <div className="absolute inset-x-0 bottom-4 flex justify-center gap-2">
+                    {currentImages.map((_, index) => (
+                      <button
+                        key={index}
+                        className={`w-2 h-2 rounded-full ${
+                          index === currentSlide ? 'bg-white' : 'bg-white/50'
+                        }`}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setCurrentSlide(index);
+                        }}
+                      />
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="aspect-[3/4] flex items-center justify-center text-gray-400 border border-gray-200 rounded-lg">
+                Нет изображения
+              </div>
+            )}
+          </div>
+
+          {/* Левая колонка с фотографиями - Десктопная версия (сетка) */}
+          <div className="lg:col-span-2 hidden md:block">
             <div className="grid grid-cols-2 gap-4">
               {currentImages && currentImages.length > 0 ? (
                 currentImages.map((image, index) => (
@@ -188,6 +293,7 @@ export default function ProductPage({ params }: ProductPageProps) {
                       loading={index === 0 ? 'eager' : 'lazy'}
                       quality={60}
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      unoptimized
                     />
                   </div>
                 ))
@@ -200,7 +306,7 @@ export default function ProductPage({ params }: ProductPageProps) {
           </div>
 
           {/* Правая колонка с информацией */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-6 space-y-6 h-fit sticky top-8">
+          <div className="product-info-card">
             <div>
               <h1 className="text-xl font-light mb-2">{product.name}</h1>
               <p className="text-2xl font-medium">{product.price.toLocaleString('ru-RU')} ₽</p>
@@ -346,6 +452,18 @@ export default function ProductPage({ params }: ProductPageProps) {
             </div>
           </div>
         )}
+        
+        {/* Ранее просмотренные */}
+        {recentlyViewed.length > 0 && (
+          <div className="mt-16">
+            <h2 className="text-2xl font-light mb-8">Ранее просмотренные</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+              {recentlyViewed.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Модальное окно для увеличенного изображения */}
@@ -363,6 +481,7 @@ export default function ProductPage({ params }: ProductPageProps) {
               className="object-contain"
               quality={60}
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 900px"
+              unoptimized
             />
             <button
               className="absolute top-4 right-4 text-white hover:text-gray-300"

@@ -345,12 +345,12 @@ function AdminPageContent() {
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex gap-2">
                       {product.status === 'new' && (
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-black text-white">
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-black text-white">
                           New
                         </span>
                       )}
                       {product.status === 'sale' && (
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-500 text-white">
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-red-500 text-white">
                           Sale
                         </span>
                       )}
