@@ -6,11 +6,13 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useProducts } from '@/context/ProductContext';
 import { useCart } from '@/context/CartContext';
+import { useFavorites } from '@/context/FavoriteContext';
 import Layout from '@/components/layout/Layout';
 import { HeartIcon, ShoppingBagIcon, ChevronRightIcon, TruckIcon, ArrowPathIcon } from '@heroicons/react/24/outline';
 import { HeartIcon as HeartIconSolid } from '@heroicons/react/24/solid';
 import ProductCard from '@/components/product/ProductCard';
 import { Product } from '@/data/products';
+import { categories } from '@/data/products';
 
 const colorMap: { [key: string]: string } = {
   'Черный': '#000000',
@@ -29,9 +31,16 @@ interface ProductPageProps {
   };
 }
 
+// Функция для перевода категории с английского на русский
+const getCategoryName = (categoryId: string): string => {
+  const category = categories.find(cat => cat.id === categoryId);
+  return category ? category.name : categoryId;
+};
+
 export default function ProductPage({ params }: ProductPageProps) {
   const { products } = useProducts();
   const { openCart } = useCart();
+  const { favorites } = useFavorites();
   const product = products.find(p => p.id === parseInt(params.id));
   const [selectedSize, setSelectedSize] = useState<string>('');
   const [selectedColor, setSelectedColor] = useState<string>('');
@@ -217,7 +226,7 @@ export default function ProductPage({ params }: ProductPageProps) {
           <ol className="flex items-center space-x-2">
             <li><Link href="/" className="text-gray-500 hover:text-gray-900">Главная</Link></li>
             <li className="text-gray-400">/</li>
-            <li><Link href={`/category/${product.category}`} className="text-gray-500 hover:text-gray-900">{product.category}</Link></li>
+            <li><Link href={`/category/${product.category}`} className="text-gray-500 hover:text-gray-900">{getCategoryName(product.category)}</Link></li>
             <li className="text-gray-400">/</li>
             <li className="text-gray-900">{product.name}</li>
           </ol>
