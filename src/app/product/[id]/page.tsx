@@ -39,7 +39,7 @@ const getCategoryName = (categoryId: string): string => {
 
 export default function ProductPage({ params }: ProductPageProps) {
   const { products } = useProducts();
-  const { openCart } = useCart();
+  const { openCart, addToCart } = useCart();
   const { favorites } = useFavorites();
   const product = products.find(p => p.id === parseInt(params.id));
   const [selectedSize, setSelectedSize] = useState<string>('');
@@ -139,25 +139,18 @@ export default function ProductPage({ params }: ProductPageProps) {
       return;
     }
 
-    const savedCart = localStorage.getItem('cart');
-    const cart = savedCart ? JSON.parse(savedCart) : [];
-    
-    const existingItemIndex = cart.findIndex(
-      (item: any) => item.productId === product?.id && item.color === selectedColor && item.size === selectedSize
-    );
-
-    if (existingItemIndex !== -1) {
-      cart[existingItemIndex].quantity += quantity;
-    } else {
-      cart.push({
-        productId: product?.id,
-        color: selectedColor || product?.colors?.[0] || '',
-        size: selectedSize,
-        quantity: quantity
-      });
+    if (!product) {
+      return;
     }
 
-    localStorage.setItem('cart', JSON.stringify(cart));
+    // Добавляем товар в корзину с помощью метода из контекста
+    addToCart({
+      productId: product.id,
+      color: selectedColor || product.colors?.[0] || '',
+      size: selectedSize,
+      quantity: quantity
+    });
+
     setNotification({ message: 'Товар добавлен в корзину', type: 'success' });
     openCart();
   };

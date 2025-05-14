@@ -7,44 +7,14 @@ import { XMarkIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { useProducts } from '@/context/ProductContext';
 import { useCart } from '@/context/CartContext';
 
-interface CartItem {
-  productId: number;
-  size: string;
-  color: string;
-  quantity: number;
-}
-
 export default function CartDrawer() {
   const { products } = useProducts();
-  const { isCartOpen, closeCart } = useCart();
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const { isCartOpen, closeCart, cartItems, updateQuantity, removeItem } = useCart();
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
-    const savedCart = localStorage.getItem('cart');
-    if (savedCart) {
-      setCartItems(JSON.parse(savedCart));
-    }
   }, []);
-
-  useEffect(() => {
-    if (isMounted) {
-      localStorage.setItem('cart', JSON.stringify(cartItems));
-    }
-  }, [cartItems, isMounted]);
-
-  const updateQuantity = (index: number, newQuantity: number) => {
-    if (newQuantity < 1) return;
-    const newCartItems = [...cartItems];
-    newCartItems[index].quantity = newQuantity;
-    setCartItems(newCartItems);
-  };
-
-  const removeItem = (index: number) => {
-    const newCartItems = cartItems.filter((_, i) => i !== index);
-    setCartItems(newCartItems);
-  };
 
   const getTotalPrice = () => {
     return cartItems.reduce((total, item) => {
