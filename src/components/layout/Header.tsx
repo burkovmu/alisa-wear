@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { ShoppingBagIcon, HeartIcon, Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { HeartIcon as HeartIconSolid } from '@heroicons/react/24/solid';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useCart } from '@/context/CartContext';
 import { useFavorites } from '@/context/FavoriteContext';
 
@@ -21,6 +21,7 @@ const navigation = [
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
+  const router = useRouter();
   const { openCart } = useCart();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { favorites } = useFavorites();
@@ -69,6 +70,36 @@ export default function Header() {
       document.body.style.top = '';
     };
   }, [isMenuOpen]);
+
+  // Обработчик клика по ссылке в мобильном меню
+  const handleLinkClick = (href: string) => {
+    setIsMenuOpen(false);
+    
+    // Если переходим на ту же страницу, но другой раздел, просто скроллим вверх
+    if (pathname === href) {
+      window.scrollTo({ top: 0, behavior: 'auto' });
+    } else {
+      // Для навигации между страницами используем router с отключенным скроллом
+      router.push(href, { scroll: false });
+    }
+  };
+
+  // Эффект для прокрутки страницы наверх при изменении маршрута
+  useEffect(() => {
+    // Принудительная прокрутка наверх с небольшой задержкой для надежности
+    const scrollToTop = () => {
+      window.scrollTo(0, 0);
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+    };
+    
+    scrollToTop();
+    
+    // Дополнительная прокрутка после небольшой задержки для надежности
+    const timeoutId = setTimeout(scrollToTop, 100);
+    
+    return () => clearTimeout(timeoutId);
+  }, [pathname]);
 
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
@@ -166,7 +197,14 @@ export default function Header() {
           <div className="flex flex-col h-full max-h-[100vh]">
             <div className="p-5 border-b border-gray-100 bg-white sticky top-0 z-10">
               <div className="flex justify-between items-center">
-                <Link href="/" className="relative w-24 h-6" onClick={() => setIsMenuOpen(false)}>
+                <Link 
+                  href="/" 
+                  className="relative w-24 h-6" 
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleLinkClick('/');
+                  }}
+                >
                   <Image
                     src="/images/logo.svg"
                     alt="ALISA"
@@ -199,7 +237,10 @@ export default function Header() {
                             ? 'text-red-500 font-bold hover:bg-gray-50/80' 
                             : 'text-gray-600 hover:bg-gray-50/80 hover:text-black'
                     }`}
-                    onClick={() => setIsMenuOpen(false)}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleLinkClick(item.href);
+                    }}
                   >
                     {item.name}
                   </Link>
@@ -212,28 +253,40 @@ export default function Header() {
                   <Link
                     href="/about"
                     className="block py-2 px-4 text-base font-normal text-gray-600 hover:bg-gray-50/80 hover:text-black rounded-lg transition-colors duration-200"
-                    onClick={() => setIsMenuOpen(false)}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleLinkClick('/about');
+                    }}
                   >
                     О нас
                   </Link>
                   <Link
                     href="/delivery"
                     className="block py-2 px-4 text-base font-normal text-gray-600 hover:bg-gray-50/80 hover:text-black rounded-lg transition-colors duration-200"
-                    onClick={() => setIsMenuOpen(false)}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleLinkClick('/delivery');
+                    }}
                   >
                     Доставка
                   </Link>
                   <Link
                     href="/returns"
                     className="block py-2 px-4 text-base font-normal text-gray-600 hover:bg-gray-50/80 hover:text-black rounded-lg transition-colors duration-200"
-                    onClick={() => setIsMenuOpen(false)}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleLinkClick('/returns');
+                    }}
                   >
                     Возврат
                   </Link>
                   <Link
                     href="/contacts"
                     className="block py-2 px-4 text-base font-normal text-gray-600 hover:bg-gray-50/80 hover:text-black rounded-lg transition-colors duration-200"
-                    onClick={() => setIsMenuOpen(false)}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleLinkClick('/contacts');
+                    }}
                   >
                     Контакты
                   </Link>

@@ -4,7 +4,6 @@ import { Inter } from 'next/font/google';
 import { FavoriteProvider } from '@/context/FavoriteContext';
 import { ProductProvider } from '@/context/ProductContext';
 import { CartProvider } from '@/context/CartContext';
-import ScrollToTop from './_app';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import CartDrawer from '@/components/cart/CartDrawer';
@@ -80,7 +79,6 @@ export default function RootLayout({
         <ProductProvider>
           <FavoriteProvider>
             <CartProvider>
-              <ScrollToTop />
               <Header />
               <main>
                 {children}
