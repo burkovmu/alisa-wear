@@ -40,15 +40,11 @@ const getCategoryName = (categoryId: string): string => {
 export default function ProductPage({ params }: ProductPageProps) {
   const { products } = useProducts();
   const { openCart, addToCart } = useCart();
-  const { favorites } = useFavorites();
+  const { favorites, addToFavorites, removeFromFavorites, isFavorite: isProductFavorite } = useFavorites();
   const product = products.find(p => p.id === parseInt(params.id));
   const [selectedSize, setSelectedSize] = useState<string>('');
   const [selectedColor, setSelectedColor] = useState<string>('');
   const [quantity, setQuantity] = useState(1);
-  const [isFavorite, setIsFavorite] = useState(false);
-  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
-  const [currentImages, setCurrentImages] = useState<string[]>([]);
-  const [isMounted, setIsMounted] = useState(false);
   const [notification, setNotification] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
   const [isImageModalOpen, setIsImageModalOpen] = useState(false);
   const [recentlyViewed, setRecentlyViewed] = useState<Product[]>([]);
@@ -56,6 +52,9 @@ export default function ProductPage({ params }: ProductPageProps) {
   const touchStartX = useRef<number | null>(null);
   const touchEndX = useRef<number | null>(null);
   const [isTouching, setIsTouching] = useState(false);
+  const [currentImages, setCurrentImages] = useState<string[]>([]);
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
@@ -64,11 +63,6 @@ export default function ProductPage({ params }: ProductPageProps) {
       setCurrentSlide(0);
       if (product.colors && product.colors.length > 0) {
         setSelectedColor(product.colors[0]);
-      }
-      const savedFavorites = localStorage.getItem('favorites');
-      if (savedFavorites) {
-        const favorites = JSON.parse(savedFavorites);
-        setIsFavorite(favorites.includes(product.id));
       }
       
       // Сохранение товара в "Ранее просмотренные"
@@ -117,18 +111,15 @@ export default function ProductPage({ params }: ProductPageProps) {
   };
 
   const handleFavoriteClick = () => {
-    const savedFavorites = localStorage.getItem('favorites');
-    const favorites = savedFavorites ? JSON.parse(savedFavorites) : [];
+    if (!product) return;
     
-    if (isFavorite) {
-      const newFavorites = favorites.filter((id: number) => id !== product?.id);
-      localStorage.setItem('favorites', JSON.stringify(newFavorites));
-      setIsFavorite(false);
+    const isFav = isProductFavorite(product.id);
+    
+    if (isFav) {
+      removeFromFavorites(product.id);
       setNotification({ message: 'Товар удален из избранного', type: 'success' });
     } else {
-      const newFavorites = [...favorites, product?.id];
-      localStorage.setItem('favorites', JSON.stringify(newFavorites));
-      setIsFavorite(true);
+      addToFavorites(product);
       setNotification({ message: 'Товар добавлен в избранное', type: 'success' });
     }
   };
@@ -432,33 +423,39 @@ export default function ProductPage({ params }: ProductPageProps) {
             </div>
 
             {/* Кнопки корзины и избранного */}
-            <div className="flex gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
               <button
+                type="button"
                 onClick={handleAddToCart}
-                className={`flex-1 py-3 text-base rounded transition-colors ${
+                className={`flex items-center justify-center py-3 px-4 rounded transition-colors ${
                   selectedSize
                     ? 'bg-black text-white hover:bg-gray-800'
                     : 'bg-gray-100 text-gray-400 cursor-not-allowed'
                 }`}
                 disabled={!selectedSize}
+                aria-label="Добавить в корзину"
               >
-                Добавить в корзину
+                <ShoppingBagIcon className="w-6 h-6 mr-2" />
+                <span>Добавить в корзину</span>
               </button>
               <button
+                type="button"
                 onClick={handleFavoriteClick}
                 className={`flex items-center justify-center py-3 px-4 rounded border transition-colors ${
-                  isFavorite
+                  isProductFavorite(product.id)
                     ? 'bg-red-100 border-red-400 text-red-500 hover:bg-red-200'
                     : 'bg-white border-gray-200 text-gray-500 hover:bg-gray-100'
                 }`}
-                style={{ minWidth: '48px', height: '48px' }}
                 aria-label="Добавить в избранное"
               >
-                {isFavorite ? (
+                {isProductFavorite(product.id) ? (
                   <HeartIconSolid className="w-6 h-6" />
                 ) : (
                   <HeartIcon className="w-6 h-6" />
                 )}
+                <span className="ml-2">
+                  {isProductFavorite(product.id) ? 'В избранном' : 'В избранное'}
+                </span>
               </button>
             </div>
 

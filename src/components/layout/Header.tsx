@@ -20,7 +20,6 @@ const navigation = [
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isFavorite, setIsFavorite] = useState(false);
   const pathname = usePathname();
   const { openCart } = useCart();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -34,11 +33,6 @@ export default function Header() {
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  useEffect(() => {
-    const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
-    setIsFavorite(favorites.length > 0);
   }, []);
 
   useEffect(() => {
@@ -98,7 +92,7 @@ export default function Header() {
               href="/favorites"
               className="relative p-2 hover:bg-gray-50 rounded-full transition-colors"
             >
-              {isFavorite ? (
+              {favoritesCount > 0 ? (
                 <HeartIconSolid className="w-6 h-6 text-red-500" />
               ) : (
                 <HeartIcon className="w-6 h-6" />

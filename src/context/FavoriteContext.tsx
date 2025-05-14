@@ -1,37 +1,92 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { Product } from '@/data/products';
+import { Product, getProductById } from '@/data/products';
 
 interface FavoriteContextType {
   favorites: Product[];
   addToFavorites: (product: Product) => void;
   removeFromFavorites: (productId: number) => void;
   isFavorite: (productId: number) => boolean;
+  loadFavorites: () => void;
 }
 
 const FavoriteContext = createContext<FavoriteContextType | undefined>(undefined);
 
 export function FavoriteProvider({ children }: { children: React.ReactNode }) {
   const [favorites, setFavorites] = useState<Product[]>([]);
+  const [isInitialized, setIsInitialized] = useState(false);
 
-  useEffect(() => {
+  // Функция загрузки избранных товаров из localStorage
+  const loadFavorites = () => {
+    if (typeof window === 'undefined') return;
+    
     const savedFavorites = localStorage.getItem('favorites');
     if (savedFavorites) {
-      setFavorites(JSON.parse(savedFavorites));
+      try {
+        const favoriteIds = JSON.parse(savedFavorites) as number[];
+        
+        // Преобразуем ID в объекты товаров
+        const favoriteProducts: Product[] = favoriteIds
+          .map(id => getProductById(id))
+          .filter((product): product is Product => product !== undefined);
+          
+        setFavorites(favoriteProducts);
+      } catch (error) {
+        console.error("Ошибка при загрузке избранных товаров:", error);
+        setFavorites([]);
+      }
+    } else {
+      setFavorites([]);
     }
+  };
+
+  // Инициализация при первой загрузке
+  useEffect(() => {
+    loadFavorites();
+    setIsInitialized(true);
+    
+    // Обработчик события изменения localStorage для синхронизации между вкладками
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'favorites') {
+        loadFavorites();
+      }
+    };
+    
+    window.addEventListener('storage', handleStorageChange);
+    
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+    };
   }, []);
 
-  useEffect(() => {
-    localStorage.setItem('favorites', JSON.stringify(favorites));
-  }, [favorites]);
-
   const addToFavorites = (product: Product) => {
-    setFavorites(prev => [...prev, product]);
+    // Проверяем, есть ли уже этот товар в избранном
+    if (!favorites.some(p => p.id === product.id)) {
+      const newFavorites = [...favorites, product];
+      setFavorites(newFavorites);
+      
+      // Обновляем localStorage
+      const favoriteIds = newFavorites.map(p => p.id);
+      localStorage.setItem('favorites', JSON.stringify(favoriteIds));
+      
+      // Создаем и диспатчим событие для синхронизации в текущей вкладке
+      const event = new Event('favoritesUpdated');
+      window.dispatchEvent(event);
+    }
   };
 
   const removeFromFavorites = (productId: number) => {
-    setFavorites(prev => prev.filter(p => p.id !== productId));
+    const newFavorites = favorites.filter(p => p.id !== productId);
+    setFavorites(newFavorites);
+    
+    // Обновляем localStorage
+    const favoriteIds = newFavorites.map(p => p.id);
+    localStorage.setItem('favorites', JSON.stringify(favoriteIds));
+    
+    // Создаем и диспатчим событие для синхронизации в текущей вкладке
+    const event = new Event('favoritesUpdated');
+    window.dispatchEvent(event);
   };
 
   const isFavorite = (productId: number) => {
@@ -39,8 +94,14 @@ export function FavoriteProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <FavoriteContext.Provider value={{ favorites, addToFavorites, removeFromFavorites, isFavorite }}>
-      {children}
+    <FavoriteContext.Provider value={{ 
+      favorites, 
+      addToFavorites, 
+      removeFromFavorites, 
+      isFavorite,
+      loadFavorites
+    }}>
+      {isInitialized ? children : null}
     </FavoriteContext.Provider>
   );
 }
