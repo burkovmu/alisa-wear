@@ -1,127 +1,42 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import Layout from '@/components/layout/Layout';
 import ProductCard from '@/components/product/ProductCard';
 import CategoryCard from '@/components/category/CategoryCard';
 import Slider from '@/components/slider/Slider';
 import { Product } from '@/data/products';
+import { useProducts } from '@/context/ProductContext';
 import Link from 'next/link';
 
 const categories = [
   {
     id: 1,
     name: 'Юбки',
-    image: '/images/categories/clothing.jpg',
-    link: '/category/skirts'
+    image: '/images/categories/clothing.jpg', // Будет заменено динамически
+    link: '/category/skirts',
+    categoryId: 'skirts'
   },
   {
     id: 2,
     name: 'Топы',
-    image: '/images/categories/clothing.jpg',
-    link: '/category/tops'
+    image: '/images/categories/clothing.jpg', // Будет заменено динамически
+    link: '/category/tops',
+    categoryId: 'tops'
   },
   {
     id: 3,
     name: 'Платья',
-    image: '/images/categories/clothing.jpg',
-    link: '/category/dresses'
+    image: '/images/categories/clothing.jpg', // Будет заменено динамически
+    link: '/category/dresses',
+    categoryId: 'dresses'
   },
   {
     id: 4,
     name: 'Пиджаки',
-    image: '/images/categories/clothing.jpg',
-    link: '/category/jackets'
-  }
-];
-
-const popularProducts: Product[] = [
-  {
-    id: 1,
-    name: 'Шелковый топ',
-    price: 5900,
-    category: 'tops',
-    images: ['/images/products/product1.jpg'],
-    colors: ['#000000', '#FFFFFF'],
-    sizes: ['XS', 'S', 'M', 'L'],
-    status: 'new',
-    description: 'Элегантный шелковый топ'
-  },
-  {
-    id: 2,
-    name: 'Шерстяная юбка',
-    price: 8900,
-    category: 'skirts',
-    images: ['/images/products/product2.jpg'],
-    colors: ['#000000', '#808080'],
-    sizes: ['S', 'M', 'L'],
-    status: 'sale',
-    description: 'Стильная шерстяная юбка'
-  },
-  {
-    id: 3,
-    name: 'Шелковый пиджак',
-    price: 12900,
-    category: 'jackets',
-    images: ['/images/products/product3.jpg'],
-    colors: ['#000000', '#808080'],
-    sizes: ['S', 'M', 'L'],
-    status: 'new',
-    description: 'Элегантный шелковый пиджак'
-  },
-  {
-    id: 4,
-    name: 'Кружевное платье',
-    price: 15900,
-    category: 'dresses',
-    images: ['/images/products/product4.jpg'],
-    colors: ['#FFFFFF', '#000000'],
-    sizes: ['XS', 'S', 'M', 'L'],
-    status: 'sale',
-    description: 'Изысканное кружевное платье'
-  },
-  {
-    id: 5,
-    name: 'Шелковый топ',
-    price: 5900,
-    category: 'tops',
-    images: ['/images/products/product1.jpg'],
-    colors: ['#000000', '#FFFFFF'],
-    sizes: ['XS', 'S', 'M', 'L'],
-    status: 'new',
-    description: 'Элегантный шелковый топ'
-  },
-  {
-    id: 6,
-    name: 'Шерстяная юбка',
-    price: 8900,
-    category: 'skirts',
-    images: ['/images/products/product2.jpg'],
-    colors: ['#000000', '#808080'],
-    sizes: ['S', 'M', 'L'],
-    status: 'sale',
-    description: 'Стильная шерстяная юбка'
-  },
-  {
-    id: 7,
-    name: 'Шелковый пиджак',
-    price: 12900,
-    category: 'jackets',
-    images: ['/images/products/product3.jpg'],
-    colors: ['#000000', '#808080'],
-    sizes: ['S', 'M', 'L'],
-    status: 'new',
-    description: 'Элегантный шелковый пиджак'
-  },
-  {
-    id: 8,
-    name: 'Кружевное платье',
-    price: 15900,
-    category: 'dresses',
-    images: ['/images/products/product4.jpg'],
-    colors: ['#FFFFFF', '#000000'],
-    sizes: ['XS', 'S', 'M', 'L'],
-    status: 'sale',
-    description: 'Изысканное кружевное платье'
+    image: '/images/categories/clothing.jpg', // Будет заменено динамически
+    link: '/category/jackets',
+    categoryId: 'jackets'
   }
 ];
 
@@ -143,7 +58,71 @@ const benefits = [
   }
 ];
 
+// Функция для перемешивания массива (алгоритм Фишера-Йетса)
+function shuffleArray<T>(array: T[]): T[] {
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+}
+
 export default function Home() {
+  const { products } = useProducts();
+  const [popularProducts, setPopularProducts] = useState<Product[]>([]);
+  const [selectedFilter, setSelectedFilter] = useState<'all' | 'new' | 'sale'>('all');
+  const [dynamicCategories, setDynamicCategories] = useState(categories);
+
+  // Обновляем изображения категорий на основе товаров в каталоге
+  useEffect(() => {
+    if (products && products.length > 0) {
+      const updatedCategories = categories.map(category => {
+        // Находим все товары из данной категории
+        const categoryProducts = products.filter(product => product.category === category.categoryId);
+        
+        if (categoryProducts.length > 0) {
+          // Берем случайный товар из категории
+          const randomProduct = categoryProducts[Math.floor(Math.random() * categoryProducts.length)];
+          // Выбираем первое изображение товара
+          const randomImage = randomProduct.images && randomProduct.images.length > 0 
+            ? randomProduct.images[0] 
+            : category.image; // Fallback на дефолтное изображение
+          
+          return {
+            ...category,
+            image: randomImage
+          };
+        }
+        
+        // Если товаров в категории нет, оставляем дефолтное изображение
+        return category;
+      });
+      
+      setDynamicCategories(updatedCategories);
+    }
+  }, [products]);
+
+  // Обновляем популярные товары по выбранному фильтру
+  useEffect(() => {
+    if (products && products.length > 0) {
+      let filteredProducts = [...products];
+      
+      // Применяем фильтр, если выбран
+      if (selectedFilter === 'new') {
+        filteredProducts = filteredProducts.filter(product => product.status === 'new');
+      } else if (selectedFilter === 'sale') {
+        filteredProducts = filteredProducts.filter(product => product.status === 'sale');
+      }
+      
+      // Перемешиваем массив
+      const shuffled = shuffleArray(filteredProducts);
+      
+      // Берем первые 8 товаров или меньше, если товаров меньше 8
+      setPopularProducts(shuffled.slice(0, 8));
+    }
+  }, [products, selectedFilter]);
+
   return (
     <Layout>
       {/* Hero секция */}
@@ -164,7 +143,7 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-light text-center mb-12">Категории</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {categories.map((category) => (
+            {dynamicCategories.map((category) => (
               <CategoryCard key={category.id} category={category} />
             ))}
           </div>
@@ -177,17 +156,36 @@ export default function Home() {
           <div className="flex justify-between items-center mb-12">
             <h2 className="text-3xl font-light">Популярные товары</h2>
             <div className="flex space-x-4">
-              <button className="text-gray-600 hover:text-black">Все</button>
-              <Link href="/new-collection" className="text-black font-bold hover:text-black">
+              <button 
+                className={`${selectedFilter === 'all' ? 'font-bold text-black' : 'text-gray-600'} hover:text-black`}
+                onClick={() => setSelectedFilter('all')}
+              >
+                Все
+              </button>
+              <button 
+                className={`${selectedFilter === 'new' ? 'font-bold text-black' : 'text-gray-600'} hover:text-black`}
+                onClick={() => setSelectedFilter('new')}
+              >
                 Новая коллекция
-              </Link>
-              <button className="text-red-500 font-bold hover:text-red-600">Sale</button>
+              </button>
+              <button 
+                className={`${selectedFilter === 'sale' ? 'font-bold text-red-500' : 'text-gray-600'} hover:text-red-500`}
+                onClick={() => setSelectedFilter('sale')}
+              >
+                Sale
+              </button>
             </div>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {popularProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
+            {popularProducts.length > 0 ? (
+              popularProducts.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))
+            ) : (
+              <div className="col-span-4 text-center py-12">
+                <p className="text-gray-500">Товары не найдены</p>
+              </div>
+            )}
           </div>
         </div>
       </section>
