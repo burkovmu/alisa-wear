@@ -5,6 +5,7 @@ import ProductCard from '@/components/product/ProductCard';
 import CategoryCard from '@/components/category/CategoryCard';
 import Slider from '@/components/slider/Slider';
 import { Product } from '@/data/products';
+import Link from 'next/link';
 
 const categories = [
   {
@@ -29,7 +30,7 @@ const categories = [
     id: 4,
     name: 'Пиджаки',
     image: '/images/categories/clothing.jpg',
-    link: '/category/blazers'
+    link: '/category/jackets'
   }
 ];
 
@@ -60,7 +61,7 @@ const popularProducts: Product[] = [
     id: 3,
     name: 'Шелковый пиджак',
     price: 12900,
-    category: 'blazers',
+    category: 'jackets',
     images: ['/images/products/product3.jpg'],
     colors: ['#000000', '#808080'],
     sizes: ['S', 'M', 'L'],
@@ -104,7 +105,7 @@ const popularProducts: Product[] = [
     id: 7,
     name: 'Шелковый пиджак',
     price: 12900,
-    category: 'blazers',
+    category: 'jackets',
     images: ['/images/products/product3.jpg'],
     colors: ['#000000', '#808080'],
     sizes: ['S', 'M', 'L'],
@@ -151,9 +152,9 @@ export default function Home() {
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="text-center text-white">
             <h1 className="text-5xl font-bold mb-4">Новая коллекция</h1>
-            <button className="bg-white text-black px-8 py-3 hover:bg-opacity-90 transition-colors duration-300">
+            <Link href="/new-collection" className="bg-white text-black px-8 py-3 hover:bg-opacity-90 transition-colors duration-300 inline-block">
               Смотреть
-            </button>
+            </Link>
           </div>
         </div>
       </section>
@@ -177,7 +178,9 @@ export default function Home() {
             <h2 className="text-3xl font-light">Популярные товары</h2>
             <div className="flex space-x-4">
               <button className="text-gray-600 hover:text-black">Все</button>
-              <button className="text-black font-bold hover:text-black">Новая коллекция</button>
+              <Link href="/new-collection" className="text-black font-bold hover:text-black">
+                Новая коллекция
+              </Link>
               <button className="text-red-500 font-bold hover:text-red-600">Sale</button>
             </div>
           </div>
@@ -197,9 +200,9 @@ export default function Home() {
               <div className="text-center">
                 <h2 className="text-4xl font-bold mb-4">Новая коллекция</h2>
                 <p className="text-gray-600 mb-8">Откройте для себя нашу новую коллекцию</p>
-                <button className="bg-black text-white px-8 py-3 hover:bg-opacity-90 transition-colors duration-300">
+                <Link href="/new-collection" className="bg-black text-white px-8 py-3 hover:bg-opacity-90 transition-colors duration-300 inline-block">
                   Смотреть
-                </button>
+                </Link>
               </div>
             </div>
           </div>

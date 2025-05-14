@@ -14,7 +14,7 @@ const navigation = [
   { name: 'Топы', href: '/category/tops' },
   { name: 'Платья', href: '/category/dresses' },
   { name: 'Пиджаки', href: '/category/jackets' },
-  { name: 'New Collection', href: '/new' },
+  { name: 'New Collection', href: '/new-collection' },
   { name: 'Sale', href: '/sale' },
 ];
 
