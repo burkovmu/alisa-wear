@@ -146,20 +146,20 @@ export default function Header() {
 
       {/* Мобильное меню */}
       <div 
-        className={`fixed inset-0 z-[999] md:hidden ${
-          isMenuOpen ? 'block' : 'hidden'
+        className={`fixed inset-0 z-[999] md:hidden transition-opacity duration-300 ease-in-out ${
+          isMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
         }`}
         style={{ height: '100%', overflowY: 'hidden' }}
       >
         {/* Затемнение фона */}
         <div 
-          className="fixed inset-0 bg-black/70 backdrop-blur-sm"
+          className="fixed inset-0 bg-black/70 backdrop-blur-sm transition-opacity duration-300"
           onClick={() => setIsMenuOpen(false)}
         />
 
         {/* Панель меню */}
         <div 
-          className={`fixed top-0 right-0 bottom-0 h-[100vh] w-[80%] max-w-[320px] bg-white shadow-xl transform transition-transform duration-300 ease-in-out overflow-hidden ${
+          className={`fixed top-0 right-0 bottom-0 h-[100vh] w-[80%] max-w-[320px] bg-white shadow-xl transform transition-all duration-300 ease-out ${
             isMenuOpen ? 'translate-x-0' : 'translate-x-full'
           }`}
         >
