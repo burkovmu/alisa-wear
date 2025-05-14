@@ -8,7 +8,7 @@ const footerLinks = {
     { name: 'Юбки', href: '/category/skirts' },
     { name: 'Топы', href: '/category/tops' },
     { name: 'Платья', href: '/category/dresses' },
-    { name: 'Пиджаки', href: '/category/blazers' },
+    { name: 'Пиджаки', href: '/category/jackets' },
   ],
   info: [
     { name: 'О нас', href: '/about' },
@@ -25,7 +25,7 @@ const footerLinks = {
 
 export default function Footer() {
   return (
-    <footer className="bg-white border-t">
+    <footer className="bg-[#fffaf7] border-t border-[#faf0ea]">
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Логотип и описание */}
@@ -100,7 +100,7 @@ export default function Footer() {
         </div>
 
         {/* Нижняя часть футера */}
-        <div className="border-t mt-12 pt-8">
+        <div className="border-t border-[#faf0ea] mt-12 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <p className="text-gray-600 text-sm">
               © {new Date().getFullYear()} Alisa Store. Все права защищены.
