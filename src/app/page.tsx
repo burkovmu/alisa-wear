@@ -8,6 +8,12 @@ import Slider from '@/components/slider/Slider';
 import { Product } from '@/data/products';
 import { useProducts } from '@/context/ProductContext';
 import Link from 'next/link';
+import { 
+  SparklesIcon, 
+  TruckIcon, 
+  CreditCardIcon, 
+  ShieldCheckIcon 
+} from '@heroicons/react/24/outline';
 
 const categories = [
   {
@@ -43,18 +49,31 @@ const categories = [
 const benefits = [
   {
     id: 1,
-    title: 'Качество',
-    description: 'Только премиальные материалы'
+    title: 'Исключительное качество',
+    description: 'Мы отбираем только премиальные материалы и тщательно контролируем процесс производства каждого изделия',
+    icon: SparklesIcon,
+    color: 'bg-white'
   },
   {
     id: 2,
-    title: 'Быстрая доставка',
-    description: 'По всей России'
+    title: 'Удобная доставка',
+    description: 'Быстрая доставка по всей России с возможностью отслеживания заказа и примерки перед покупкой',
+    icon: TruckIcon,
+    color: 'bg-white'
   },
   {
     id: 3,
-    title: 'Безопасная оплата',
-    description: 'Различные способы оплаты'
+    title: 'Безопасные платежи',
+    description: 'Различные способы оплаты с защитой данных и возможностью оплаты при получении',
+    icon: CreditCardIcon,
+    color: 'bg-white'
+  },
+  {
+    id: 4,
+    title: 'Гарантия качества',
+    description: 'Мы уверены в качестве нашей продукции и предоставляем гарантию возврата в течение 14 дней',
+    icon: ShieldCheckIcon,
+    color: 'bg-white'
   }
 ];
 
@@ -210,11 +229,20 @@ export default function Home() {
       {/* Преимущества */}
       <section className="py-16 bg-gray-50">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <h2 className="text-3xl font-light text-center mb-12">Наши преимущества</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {benefits.map((benefit) => (
-              <div key={benefit.id} className="text-center">
-                <h3 className="text-xl font-light mb-2">{benefit.title}</h3>
-                <p className="text-gray-600">{benefit.description}</p>
+              <div 
+                key={benefit.id} 
+                className="rounded-lg p-6 transition-all duration-300 hover:shadow-md bg-white border border-gray-100"
+              >
+                <div className="flex flex-col items-center text-center">
+                  <div className="bg-[#f9f9f9] p-4 rounded-full shadow-sm mb-5">
+                    <benefit.icon className="w-8 h-8 text-black" />
+                  </div>
+                  <h3 className="text-xl font-medium mb-3">{benefit.title}</h3>
+                  <p className="text-gray-600">{benefit.description}</p>
+                </div>
               </div>
             ))}
           </div>
