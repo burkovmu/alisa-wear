@@ -166,26 +166,6 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <div className="flex justify-between items-center mb-12">
             <h2 className="text-3xl font-light">Популярные товары</h2>
-            <div className="flex space-x-4">
-              <button 
-                className={`${selectedFilter === 'all' ? 'font-bold text-black' : 'text-gray-600'} hover:text-black`}
-                onClick={() => setSelectedFilter('all')}
-              >
-                Все
-              </button>
-              <button 
-                className={`${selectedFilter === 'new' ? 'font-bold text-black' : 'text-gray-600'} hover:text-black`}
-                onClick={() => setSelectedFilter('new')}
-              >
-                Новая коллекция
-              </button>
-              <button 
-                className={`${selectedFilter === 'sale' ? 'font-bold text-red-500' : 'text-gray-600'} hover:text-red-500`}
-                onClick={() => setSelectedFilter('sale')}
-              >
-                Sale
-              </button>
-            </div>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {popularProducts.length > 0 ? (
