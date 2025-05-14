@@ -145,16 +145,8 @@ export default function Home() {
   return (
     <Layout>
       {/* Hero секция */}
-      <section className="relative h-[80vh]">
+      <section className="relative h-[90vh]">
         <Slider />
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="text-center text-white">
-            <h1 className="text-5xl font-bold mb-4">Новая коллекция</h1>
-            <Link href="/new-collection" className="bg-white text-black px-8 py-3 hover:bg-opacity-90 transition-colors duration-300 inline-block">
-              Смотреть
-            </Link>
-          </div>
-        </div>
       </section>
 
       {/* Категории */}
