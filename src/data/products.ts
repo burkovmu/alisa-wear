@@ -325,7 +325,7 @@ export const initialProducts: Product[] = [
       "Сушить в расправленном виде"
     ]
   },
-  // Блейзеры
+  // Пиджаки
   {
     id: 11,
     name: "Шерстяной блейзер",
@@ -1272,7 +1272,7 @@ export const initialProducts: Product[] = [
 
 export const categories = [
   { id: 'dresses', name: 'Платья' },
-  { id: 'jackets', name: 'Блейзеры' },
+  { id: 'jackets', name: 'Пиджаки' },
   { id: 'tops', name: 'Топы и блузы' },
   { id: 'skirts', name: 'Юбки' }
 ];
