@@ -18,6 +18,8 @@ const nextConfig = {
     optimizeCss: false,
     optimizePackageImports: ['@heroicons/react'],
   },
+  output: 'standalone',
+  outputFileTracing: true,
 };
 
 module.exports = nextConfig; 
