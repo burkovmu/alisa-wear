@@ -201,6 +201,59 @@ export default function ProductPage({ params }: ProductPageProps) {
     touchEndX.current = null;
   };
 
+  const handleCloseModal = (e: React.MouseEvent<HTMLDivElement>) => {
+    // Закрывать модальное окно только при клике на фон, но не на изображение
+    if (e.target === e.currentTarget) {
+      setIsImageModalOpen(false);
+    }
+  };
+
+  const handleNextImage = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (currentImages && selectedImageIndex < currentImages.length - 1) {
+      setSelectedImageIndex(selectedImageIndex + 1);
+    } else if (currentImages) {
+      // Переход к первому изображению при достижении конца
+      setSelectedImageIndex(0);
+    }
+  };
+
+  const handlePrevImage = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (selectedImageIndex > 0) {
+      setSelectedImageIndex(selectedImageIndex - 1);
+    } else if (currentImages) {
+      // Переход к последнему изображению при достижении начала
+      setSelectedImageIndex(currentImages.length - 1);
+    }
+  };
+
+  // Обработчик клавиш для навигации по изображениям
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (!isImageModalOpen) return;
+      
+      if (e.key === 'ArrowRight') {
+        if (currentImages && selectedImageIndex < currentImages.length - 1) {
+          setSelectedImageIndex(selectedImageIndex + 1);
+        } else if (currentImages) {
+          setSelectedImageIndex(0);
+        }
+      } else if (e.key === 'ArrowLeft') {
+        if (selectedImageIndex > 0) {
+          setSelectedImageIndex(selectedImageIndex - 1);
+        } else if (currentImages) {
+          setSelectedImageIndex(currentImages.length - 1);
+        }
+      } else if (e.key === 'Escape') {
+        setIsImageModalOpen(false);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isImageModalOpen, currentImages, selectedImageIndex]);
+
   if (!isMounted || !product) {
     return (
       <Layout>
@@ -450,6 +503,36 @@ export default function ProductPage({ params }: ProductPageProps) {
           </p>
         </div>
 
+        {/* Характеристики */}
+        {product.features && product.features.length > 0 && (
+          <div className="mt-8 pt-8 border-t border-gray-100">
+            <h2 className="text-lg font-medium mb-4">Характеристики</h2>
+            <ul className="text-gray-600 space-y-2">
+              {product.features.map((feature, index) => (
+                <li key={index} className="flex items-start">
+                  <span className="mr-2">•</span>
+                  {feature}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {/* Информация об уходе */}
+        {product.careInfo && product.careInfo.length > 0 && (
+          <div className="mt-8 pt-8 border-t border-gray-100">
+            <h2 className="text-lg font-medium mb-4">Уход за изделием</h2>
+            <ul className="text-gray-600 space-y-2">
+              {product.careInfo.map((info, index) => (
+                <li key={index} className="flex items-start">
+                  <span className="mr-2">•</span>
+                  {info}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
         {/* Рекомендации */}
         {similarProducts.length > 0 && (
           <div className="mt-16">
@@ -478,28 +561,54 @@ export default function ProductPage({ params }: ProductPageProps) {
       {/* Модальное окно для увеличенного изображения */}
       {isImageModalOpen && currentImages && currentImages.length > 0 && (
         <div 
-          className="fixed inset-0 bg-black bg-opacity-75 z-50 flex items-center justify-center"
-          onClick={() => setIsImageModalOpen(false)}
+          className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center"
+          onClick={handleCloseModal}
         >
-          <div className="relative w-full h-full max-w-7xl max-h-[90vh] p-4">
-            <Image
-              src={currentImages[selectedImageIndex]}
-              alt={product.name}
-              width={900}
-              height={1200}
-              className="object-contain"
-              quality={60}
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 900px"
-              unoptimized
-            />
-            <button
-              className="absolute top-4 right-4 text-white hover:text-gray-300"
-              onClick={() => setIsImageModalOpen(false)}
-            >
-              <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
+          <div className="relative w-full h-full flex items-center justify-center">
+            <div className="relative max-w-full max-h-full p-4 transition-transform duration-300">
+              <Image
+                src={currentImages[selectedImageIndex]}
+                alt={product.name}
+                width={1200}
+                height={1600}
+                className="object-contain max-h-[85vh] mx-auto"
+                quality={80}
+                unoptimized
+              />
+              
+              <div className="absolute top-0 left-0 w-full flex justify-between items-center p-4">
+                <span className="text-white bg-black/50 px-3 py-1 rounded-full text-sm">
+                  {selectedImageIndex + 1} / {currentImages.length}
+                </span>
+                <button
+                  className="bg-black/50 text-white p-2 rounded-full hover:bg-black/70 transition-colors"
+                  onClick={() => setIsImageModalOpen(false)}
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+              
+              {/* Кнопки навигации */}
+              <button
+                className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-black/50 text-white p-3 rounded-full hover:bg-black/70 transition-colors z-10"
+                onClick={handlePrevImage}
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                </svg>
+              </button>
+              
+              <button
+                className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-black/50 text-white p-3 rounded-full hover:bg-black/70 transition-colors z-10"
+                onClick={handleNextImage}
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </button>
+            </div>
           </div>
         </div>
       )}
