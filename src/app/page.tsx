@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import Layout from '@/components/layout/Layout';
 import ProductCard from '@/components/product/ProductCard';
 import CategoryCard from '@/components/category/CategoryCard';
 import Slider from '@/components/slider/Slider';
@@ -143,7 +142,7 @@ export default function Home() {
   }, [products, selectedFilter]);
 
   return (
-    <Layout>
+    <div className="min-h-screen flex flex-col">
       {/* Hero секция */}
       <section className="relative h-[90vh]">
         <Slider />
@@ -220,6 +219,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-    </Layout>
+    </div>
   );
 }
