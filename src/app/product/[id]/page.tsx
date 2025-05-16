@@ -241,7 +241,7 @@ export default function ProductPage({ params }: ProductPageProps) {
   if (!isMounted || !product) {
     return (
       <Layout>
-        <div className="container mx-auto px-4 py-12">
+        <div className="mobile-container px-4 py-12">
           <div className="flex justify-center items-center h-64">
             <div className="animate-pulse text-gray-500">Загрузка...</div>
           </div>
@@ -257,7 +257,7 @@ export default function ProductPage({ params }: ProductPageProps) {
 
   return (
     <Layout>
-      <div className="container mx-auto px-4 py-8">
+      <div className="mobile-container px-4 py-12">
         {/* Хлебные крошки */}
         <nav className="text-sm mb-8">
           <ol className="flex items-center space-x-2">
