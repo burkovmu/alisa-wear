@@ -144,7 +144,7 @@ export default function Home() {
   return (
     <div className="min-h-screen flex flex-col">
       {/* Hero секция */}
-      <section className="relative h-[90vh]">
+      <section className="relative h-[90vh] pt-2">
         <Slider />
       </section>
 
