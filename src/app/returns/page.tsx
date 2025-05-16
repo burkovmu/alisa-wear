@@ -6,178 +6,134 @@ import Link from 'next/link';
 
 export default function ReturnsPage() {
   return (
-    <Layout>
-      <div className="container mx-auto px-4 py-12">
-        <h1 className="text-3xl font-bold text-center mb-8">Возврат товаров</h1>
+    <main>
+      <div className="mobile-container px-4 py-12">
+        <h1 className="text-4xl font-bold mb-8">Возврат товаров</h1>
         
-        <div className="max-w-3xl mx-auto mb-12">
-          <p className="text-gray-600 mb-8 text-center">
-            Мы стремимся к тому, чтобы вы были полностью удовлетворены своей покупкой.
-            Если по какой-либо причине товар вам не подошел, вы можете вернуть его в течение 14 дней с момента получения.
-          </p>
-        </div>
+        <p className="mb-8 text-lg">
+          Мы стремимся к тому, чтобы вы были полностью удовлетворены вашей покупкой. 
+          Однако, если по какой-либо причине вы не удовлетворены, вы можете вернуть товар 
+          в течение 14 дней с момента получения.
+        </p>
         
-        <div className="mb-16">
-          <h2 className="text-2xl font-light text-center mb-8">Условия возврата</h2>
+        <section className="mb-12">
+          <h2 className="text-2xl font-semibold mb-6">Условия возврата</h2>
+          
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="border border-gray-200 rounded-lg p-6 transition-shadow hover:shadow-md">
-              <div className="flex items-center mb-4">
-                <div className="bg-[#fffaf7] p-3 rounded-full mr-4">
-                  <ArrowPathIcon className="w-6 h-6 text-black" />
-                </div>
-                <h3 className="text-xl font-medium">Что можно вернуть</h3>
-              </div>
-              <ul className="space-y-4 text-gray-600">
-                <li className="flex">
-                  <span className="mr-2">•</span>
-                  <span>Товары, не бывшие в употреблении</span>
-                </li>
-                <li className="flex">
-                  <span className="mr-2">•</span>
-                  <span>Товары с сохраненными ярлыками и бирками</span>
-                </li>
-                <li className="flex">
-                  <span className="mr-2">•</span>
-                  <span>Товары в оригинальной упаковке (если применимо)</span>
-                </li>
-                <li className="flex">
-                  <span className="mr-2">•</span>
-                  <span>Товары, не имеющие следов носки и использования</span>
-                </li>
-                <li className="flex">
-                  <span className="mr-2">•</span>
-                  <span>Товары, купленные не более 14 дней назад</span>
-                </li>
+            <div className="bg-gray-50 p-6 rounded-lg">
+              <h3 className="text-xl font-medium mb-4">Товар можно вернуть, если:</h3>
+              <ul className="list-disc list-inside space-y-2">
+                <li>Товар не был в употреблении</li>
+                <li>Сохранены бирки и ярлыки</li>
+                <li>Сохранена оригинальная упаковка</li>
+                <li>Товар не имеет следов использования или повреждений</li>
+                <li>Прошло не более 14 дней с момента получения</li>
               </ul>
             </div>
             
-            <div className="border border-gray-200 rounded-lg p-6 transition-shadow hover:shadow-md">
-              <div className="flex items-center mb-4">
-                <div className="bg-[#fffaf7] p-3 rounded-full mr-4">
-                  <DocumentTextIcon className="w-6 h-6 text-black" />
-                </div>
-                <h3 className="text-xl font-medium">Что нельзя вернуть</h3>
-              </div>
-              <ul className="space-y-4 text-gray-600">
-                <li className="flex">
-                  <span className="mr-2">•</span>
-                  <span>Товары, бывшие в употреблении или со следами носки</span>
-                </li>
-                <li className="flex">
-                  <span className="mr-2">•</span>
-                  <span>Товары без оригинальных ярлыков и бирок</span>
-                </li>
-                <li className="flex">
-                  <span className="mr-2">•</span>
-                  <span>Товары со скидкой более 50% (только обмен при наличии брака)</span>
-                </li>
-                <li className="flex">
-                  <span className="mr-2">•</span>
-                  <span>Нижнее белье, носки, купальники (по гигиеническим соображениям)</span>
-                </li>
-                <li className="flex">
-                  <span className="mr-2">•</span>
-                  <span>Товары, купленные более 14 дней назад</span>
-                </li>
+            <div className="bg-gray-50 p-6 rounded-lg">
+              <h3 className="text-xl font-medium mb-4">Товар нельзя вернуть, если:</h3>
+              <ul className="list-disc list-inside space-y-2">
+                <li>Товар был в использовании</li>
+                <li>Отсутствуют или повреждены бирки и ярлыки</li>
+                <li>Нарушена целостность упаковки</li>
+                <li>Есть следы носки, загрязнения или повреждения</li>
+                <li>Товар относится к категории нижнего белья или купальников</li>
               </ul>
             </div>
           </div>
-        </div>
+        </section>
         
-        <div className="bg-[#fffaf7] rounded-lg p-8 mb-16">
-          <h2 className="text-2xl font-light text-center mb-8">Процесс возврата</h2>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            <div className="text-center">
-              <div className="bg-white rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 shadow-sm">
-                <span className="text-2xl font-semibold">1</span>
+        <section className="mb-12">
+          <h2 className="text-2xl font-semibold mb-6">Процесс возврата</h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="bg-gray-50 p-6 rounded-lg">
+              <div className="flex flex-col items-center text-center">
+                <div className="bg-white p-3 rounded-full shadow-sm mb-4 inline-block">
+                  <DocumentTextIcon className="w-8 h-8" />
+                </div>
+                <h3 className="text-xl font-medium mb-2">1. Заполните заявку</h3>
+                <p>
+                  Заполните форму заявки на возврат в личном кабинете или свяжитесь с нами по телефону.
+                </p>
               </div>
-              <h3 className="text-lg font-medium mb-2">Заполните заявку</h3>
-              <p className="text-gray-600">
-                Заполните форму заявки на возврат в личном кабинете или свяжитесь с нами по телефону
-              </p>
             </div>
-            <div className="text-center">
-              <div className="bg-white rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 shadow-sm">
-                <span className="text-2xl font-semibold">2</span>
+            
+            <div className="bg-gray-50 p-6 rounded-lg">
+              <div className="flex flex-col items-center text-center">
+                <div className="bg-white p-3 rounded-full shadow-sm mb-4 inline-block">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5m8.25 3v6.75m0-6.75h-3m3 0h3M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-medium mb-2">2. Упакуйте товар</h3>
+                <p>
+                  Упакуйте товар в оригинальную или подходящую защитную упаковку с сохранением всех бирок.
+                </p>
               </div>
-              <h3 className="text-lg font-medium mb-2">Упакуйте товар</h3>
-              <p className="text-gray-600">
-                Упакуйте товар в оригинальную или подходящую упаковку вместе с заполненным заявлением
-              </p>
             </div>
-            <div className="text-center">
-              <div className="bg-white rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 shadow-sm">
-                <span className="text-2xl font-semibold">3</span>
+            
+            <div className="bg-gray-50 p-6 rounded-lg">
+              <div className="flex flex-col items-center text-center">
+                <div className="bg-white p-3 rounded-full shadow-sm mb-4 inline-block">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-medium mb-2">3. Отправьте товар</h3>
+                <p>
+                  Отправьте товар по указанному адресу любой удобной для вас службой доставки.
+                </p>
               </div>
-              <h3 className="text-lg font-medium mb-2">Отправьте товар</h3>
-              <p className="text-gray-600">
-                Отправьте товар через курьерскую службу или принесите в один из наших магазинов
-              </p>
             </div>
-            <div className="text-center">
-              <div className="bg-white rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 shadow-sm">
-                <span className="text-2xl font-semibold">4</span>
+            
+            <div className="bg-gray-50 p-6 rounded-lg">
+              <div className="flex flex-col items-center text-center">
+                <div className="bg-white p-3 rounded-full shadow-sm mb-4 inline-block">
+                  <ArrowPathIcon className="w-8 h-8" />
+                </div>
+                <h3 className="text-xl font-medium mb-2">4. Получите возврат</h3>
+                <p>
+                  После проверки товара мы вернем деньги на указанный вами счет в течение 10 рабочих дней.
+                </p>
               </div>
-              <h3 className="text-lg font-medium mb-2">Получите возврат</h3>
-              <p className="text-gray-600">
-                После проверки товара мы вернем деньги на вашу карту или банковский счет в течение 10 дней
-              </p>
             </div>
           </div>
-        </div>
+        </section>
         
-        <div className="mb-16">
-          <h2 className="text-2xl font-light text-center mb-8">Часто задаваемые вопросы о возврате</h2>
+        <section className="mb-12">
+          <h2 className="text-2xl font-semibold mb-6">Часто задаваемые вопросы</h2>
+          
           <div className="space-y-6">
-            <div className="border-b border-gray-200 pb-4">
-              <h3 className="text-lg font-medium mb-2">Как быстро я получу деньги за возвращенный товар?</h3>
-              <p className="text-gray-600">
-                После того как мы получим и проверим возвращенный товар, денежные средства будут возвращены 
-                на вашу банковскую карту или счет в течение 10 рабочих дней. Точный срок зависит от вашего банка.
-              </p>
+            <div>
+              <h3 className="text-xl font-medium mb-2">Сколько времени занимает возврат денег?</h3>
+              <p>После получения и проверки возвращенного товара, деньги будут возвращены вам в течение 10 рабочих дней.</p>
             </div>
-            <div className="border-b border-gray-200 pb-4">
-              <h3 className="text-lg font-medium mb-2">Могу ли я обменять товар на другой размер или цвет?</h3>
-              <p className="text-gray-600">
-                Да, вы можете обменять товар на другой размер или цвет при наличии нужного товара на складе. 
-                Для этого следуйте той же процедуре, что и при возврате, указав в заявлении, что вы хотите обменять товар.
-              </p>
+            
+            <div>
+              <h3 className="text-xl font-medium mb-2">Можно ли обменять товар на другой размер?</h3>
+              <p>Да, вы можете обменять товар на другой размер при наличии его в наличии. Для этого свяжитесь с нашей службой поддержки.</p>
             </div>
-            <div className="border-b border-gray-200 pb-4">
-              <h3 className="text-lg font-medium mb-2">Кто оплачивает доставку при возврате товара?</h3>
-              <p className="text-gray-600">
-                Если товар возвращается по причине брака или ошибки с нашей стороны, мы полностью компенсируем стоимость 
-                доставки. В других случаях расходы на доставку товара обратно несет покупатель.
-              </p>
+            
+            <div>
+              <h3 className="text-xl font-medium mb-2">Кто оплачивает доставку при возврате?</h3>
+              <p>Расходы на обратную доставку товара при возврате оплачивает покупатель, за исключением случаев возврата товара ненадлежащего качества.</p>
             </div>
-            <div className="border-b border-gray-200 pb-4">
-              <h3 className="text-lg font-medium mb-2">Что делать, если товар оказался бракованным?</h3>
-              <p className="text-gray-600">
-                Если вы обнаружили брак или дефект товара, пожалуйста, сообщите нам об этом в течение 3 дней после 
-                получения. Приложите фотографии дефекта к вашему заявлению на возврат. Мы вернем вам полную стоимость 
-                товара и компенсируем расходы на доставку.
-              </p>
-            </div>
-            <div className="border-b border-gray-200 pb-4">
-              <h3 className="text-lg font-medium mb-2">Можно ли вернуть товар, купленный со скидкой?</h3>
-              <p className="text-gray-600">
-                Товары, купленные со скидкой до 50%, можно вернуть на общих основаниях. Товары со скидкой более 50% 
-                возврату не подлежат, но могут быть обменены при наличии производственного брака.
-              </p>
+            
+            <div>
+              <h3 className="text-xl font-medium mb-2">Что делать, если товар оказался бракованным?</h3>
+              <p>Если вы обнаружили дефект или брак, пожалуйста, свяжитесь с нами в течение 3 дней с момента получения товара. Мы заменим товар или вернем деньги, включая расходы на доставку.</p>
             </div>
           </div>
-        </div>
+        </section>
         
-        <div className="text-center mb-8">
-          <h2 className="text-2xl font-light mb-6">Нужна помощь с возвратом?</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto mb-8">
-            Если у вас возникли вопросы по процедуре возврата или вам нужна помощь, пожалуйста, свяжитесь с нашей службой поддержки.
+        <section>
+          <p className="text-lg">
+            Остались вопросы? <Link href="/contacts" className="text-blue-600 hover:underline">Свяжитесь с нами</Link>, и мы с радостью на них ответим.
           </p>
-          <Link href="/contacts" className="inline-block bg-black text-white px-6 py-3 rounded hover:bg-gray-800 transition-colors">
-            Связаться с нами
-          </Link>
-        </div>
+        </section>
       </div>
-    </Layout>
+    </main>
   );
 } 

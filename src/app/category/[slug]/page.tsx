@@ -32,7 +32,7 @@ export default function CategoryPage() {
   if (!isMounted) {
     return (
       <Layout>
-        <div className="container mx-auto px-6 py-12">
+        <div className="mobile-container px-4 py-12">
           <div className="flex justify-center items-center h-64">
             <div className="animate-pulse text-gray-500 tracking-wide">Загрузка...</div>
           </div>
@@ -43,7 +43,7 @@ export default function CategoryPage() {
 
   return (
     <Layout>
-      <div className="container mx-auto px-6 py-12">
+      <div className="mobile-container px-4 py-12">
         {/* Хлебные крошки */}
         <nav className="text-sm mb-8">
           <ol className="flex items-center space-x-2">

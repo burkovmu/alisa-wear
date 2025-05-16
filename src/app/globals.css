@@ -29,6 +29,12 @@ body {
     @media (min-width: 768px) {
       width: 80%;
     }
+
+    /* Добавление стилей для мобильной версии контейнера */
+    @media (max-width: 767px) {
+      width: 95% !important;
+      max-width: 95% !important;
+    }
   }
 
   .bg-accent {
@@ -77,6 +83,16 @@ body {
   .touch-drag {
     cursor: grab;
     user-select: none;
+  }
+}
+
+/* Мобильная версия - устанавливаем ширину контейнера 95% */
+@media (max-width: 767px) {
+  .container {
+    width: 95% !important;
+    max-width: 95% !important;
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
   }
 }
 
