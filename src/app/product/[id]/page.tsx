@@ -257,7 +257,7 @@ export default function ProductPage({ params }: ProductPageProps) {
 
   return (
     <Layout>
-      <div className="mobile-container px-4 py-12">
+      <div className="container px-4 py-12">
         {/* Хлебные крошки */}
         <nav className="text-sm mb-8">
           <ol className="flex items-center space-x-2">
