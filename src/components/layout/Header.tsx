@@ -140,36 +140,36 @@ export default function Header() {
           </nav>
 
           {/* Иконки */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-5">
             <Link
               href="/favorites"
-              className="relative p-2 hover:bg-gray-50 rounded-full transition-all duration-300 group"
+              className="relative p-1.5 hover:bg-gray-50/80 rounded-full transition-all duration-300 group"
               aria-label="Избранное"
             >
               {favoritesCount > 0 ? (
-                <HeartIconSolid className="w-5 h-5 text-red-500 group-hover:scale-110 transition-transform duration-300" />
+                <HeartIconSolid className="w-6 h-6 text-red-500 group-hover:scale-110 transition-transform duration-300" />
               ) : (
-                <HeartIcon className="w-5 h-5 group-hover:scale-110 transition-transform duration-300" />
+                <HeartIcon className="w-6 h-6 group-hover:scale-110 group-hover:text-red-400 transition-all duration-300 stroke-[1.5px]" />
               )}
               {favoritesCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+                <span className="absolute -top-1.5 -right-1.5 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center shadow-sm transform group-hover:scale-110 transition-transform duration-300">
                   {favoritesCount}
                 </span>
               )}
             </Link>
             <button
               onClick={openCart}
-              className="p-2 hover:bg-gray-50 rounded-full transition-all duration-300 group"
+              className="p-1.5 hover:bg-gray-50/80 rounded-full transition-all duration-300 group"
               aria-label="Корзина"
             >
-              <ShoppingBagIcon className="w-5 h-5 group-hover:scale-110 transition-transform duration-300" />
+              <ShoppingBagIcon className="w-6 h-6 group-hover:scale-110 group-hover:text-black transition-all duration-300 stroke-[1.5px]" />
             </button>
             <button
               onClick={() => setIsMenuOpen(true)}
-              className="p-2 hover:bg-gray-50 rounded-full transition-all duration-300 md:hidden"
+              className="p-1.5 hover:bg-gray-50/80 rounded-full transition-all duration-300 md:hidden"
               aria-label="Меню"
             >
-              <Bars3Icon className="w-5 h-5" />
+              <Bars3Icon className="w-6 h-6" />
             </button>
           </div>
         </div>
