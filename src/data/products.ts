@@ -1273,7 +1273,7 @@ export const initialProducts: Product[] = [
 export const categories = [
   { id: 'dresses', name: 'Платья' },
   { id: 'jackets', name: 'Пиджаки' },
-  { id: 'tops', name: 'Топы и блузы' },
+  { id: 'tops', name: 'Топы' },
   { id: 'skirts', name: 'Юбки' }
 ];
 
