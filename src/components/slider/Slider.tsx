@@ -106,13 +106,13 @@ const Slider = () => {
             <div className={`${
               index === currentSlide ? 'animate-fade-in-up' : 'opacity-0'
             }`}>
-              <h2 className="text-6xl font-light text-white mb-3">
+              <h2 className="text-4xl font-light text-white mb-2">
                 {slide.title}
               </h2>
-              <p className="text-xl text-white/90 mb-8">
+              <p className="text-base text-white/80 mb-6">
                 {slide.description}
               </p>
-              <button className="px-8 py-2.5 bg-white text-black hover:bg-black hover:text-white transition-colors duration-300">
+              <button className="px-6 py-2 bg-white/90 text-black hover:bg-white transition-colors duration-300 text-sm">
                 К покупкам
               </button>
             </div>
@@ -121,24 +121,26 @@ const Slider = () => {
       ))}
 
       {/* Кнопки навигации */}
-      <div className="absolute left-0 right-0 top-1/2 transform -translate-y-1/2 flex justify-between px-6 z-10">
+      <div className="absolute left-0 right-0 top-1/2 transform -translate-y-1/2 flex justify-between px-8 z-10">
         <button 
           onClick={() => {
             goToPrevSlide();
             resetAutoplay();
           }}
-          className="bg-white/10 hover:bg-white/30 p-3 rounded-full transition-all duration-300"
+          className="text-white/60 hover:text-white transition-all duration-300"
+          aria-label="Предыдущий слайд"
         >
-          <ArrowLeftIcon className="w-6 h-6 text-white" />
+          <ArrowLeftIcon className="w-4 h-4" strokeWidth={1.5} />
         </button>
         <button 
           onClick={() => {
             goToNextSlide();
             resetAutoplay();
           }}
-          className="bg-white/10 hover:bg-white/30 p-3 rounded-full transition-all duration-300"
+          className="text-white/60 hover:text-white transition-all duration-300"
+          aria-label="Следующий слайд"
         >
-          <ArrowRightIcon className="w-6 h-6 text-white" />
+          <ArrowRightIcon className="w-4 h-4" strokeWidth={1.5} />
         </button>
       </div>
 
