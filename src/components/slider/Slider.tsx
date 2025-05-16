@@ -96,7 +96,7 @@ const Slider = () => {
             fill
             className="object-cover"
             priority={index === 0}
-            unoptimized
+            quality={90}
           />
           {/* Градиентный оверлей вместо однотонного */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
@@ -113,7 +113,7 @@ const Slider = () => {
                 {slide.description}
               </p>
               <button className="px-8 py-2.5 bg-white text-black hover:bg-black hover:text-white transition-colors duration-300">
-                Смотреть
+                К покупкам
               </button>
             </div>
           </div>

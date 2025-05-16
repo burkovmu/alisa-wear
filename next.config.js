@@ -12,7 +12,7 @@ const nextConfig = {
     imageSizes: [16, 32, 48, 64, 96, 128, 256],
     formats: ['image/webp', 'image/avif'],
     minimumCacheTTL: 0,
-    unoptimized: true,
+    unoptimized: false,
   },
   experimental: {
     optimizeCss: false,

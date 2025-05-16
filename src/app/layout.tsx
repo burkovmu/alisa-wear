@@ -86,6 +86,7 @@ export default function RootLayout({
                 {children}
               </main>
               <CartDrawer />
+              {/* Глобальный футер для всего приложения */}
               <Footer />
             </CartProvider>
           </FavoriteProvider>
